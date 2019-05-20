@@ -20,14 +20,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScoresActivity"
+        <activity
+            android:name=".ScoresActivity"
             android:label="High Scores"
-            android:parentActivityName=".MenuActivity"/>
-        <activity android:name=".SettingsActivity"
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".SettingsActivity"
             android:label="Game Settings"
-            android:parentActivityName=".MenuActivity"/>
-        <activity android:name=".GameActivity"
-            android:label="Game"/>
+            android:parentActivityName=".MenuActivity" />
+        <activity
+            android:name=".GameActivity"
+            android:label="Game" />
+        <activity android:name=".AuthenticateActivity"></activity>
     </application>
 
 </manifest>

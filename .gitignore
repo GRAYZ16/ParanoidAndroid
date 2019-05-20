@@ -9,3 +9,4 @@
 /build
 /captures
 .externalNativeBuild
+/app/src/main/resources/twitter4j.properties

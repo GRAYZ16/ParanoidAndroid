@@ -25,7 +25,7 @@ public class MenuActivity extends AppCompatActivity
 
         if(buttonText.equals(getString(R.string.btn_newGame)))
         {
-            intent = new Intent(this, GameActivity.class);
+            intent = new Intent(this, AuthenticateActivity.class);
         }
         else if(buttonText.equals(getString(R.string.btn_scores)))
         {
