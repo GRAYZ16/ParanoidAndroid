@@ -6,8 +6,22 @@
     <string name="header_name">Name</string>
     <string name="header_score">Score</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btnSubmit">Submit</string>
     <string name="btnSkip">Skip</string>
+    <string name="tvSettingTheme">App Theme</string>
+    <string name="tvSettingHardMode">Hard Mode (end game on wrong answer)</string>
+    <string name="btnSettingSoundOn">Mute Sound Effects</string>
+    <string name="btnSettingSoundOff">Turn on Sound Effects</string>
+    <string name="question">Question Text</string>
+
+    <string-array name="theme">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+
+    <string-array name="difficulty">
+        <item>Off</item>
+        <item>On</item>
+    </string-array>
+
 </resources>

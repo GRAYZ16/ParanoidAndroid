@@ -10,10 +10,15 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import au.edu.jcu.cp3406.paranoidandroid.game.state.State;
+import au.edu.jcu.cp3406.paranoidandroid.game.state.StateListener;
+
 public class ShakeListener implements SensorEventListener
 {
     private static final int MILLIS_TIMEOUT = 1;
     private static final float ACCEL_THRESHOLD = 1.5f;
+
+    private StateListener stateListener;
 
     private SensorManager sensorManager;
     private Sensor accelerometer;
@@ -22,6 +27,7 @@ public class ShakeListener implements SensorEventListener
     public ShakeListener(Context context)
     {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        stateListener = (StateListener) context;
 
         if(sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null)
         {
@@ -35,15 +41,18 @@ public class ShakeListener implements SensorEventListener
         lastActivationTime = 0;
     }
 
+
     public void onResume()
     {
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+
     public void onPause()
     {
         sensorManager.unregisterListener(this);
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event)
@@ -64,15 +73,14 @@ public class ShakeListener implements SensorEventListener
                 if(acceleration > ACCEL_THRESHOLD)
                 {
                     lastActivationTime = now;
-                    Log.i("ShakeListener", "We cooking with gas baby");
+                    stateListener.onUpdate(State.CONTINUE_GAME);
                 }
             }
         }
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy)
-    {
 
-    }
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+
 }

@@ -1,11 +1,15 @@
 package au.edu.jcu.cp3406.paranoidandroid;
 
 import android.content.Context;
+import android.provider.ContactsContract;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import au.edu.jcu.cp3406.paranoidandroid.game.DataManager;
+import au.edu.jcu.cp3406.paranoidandroid.game.Question;
 
 import static org.junit.Assert.*;
 
@@ -25,4 +29,35 @@ public class ExampleInstrumentedTest
 
         assertEquals("au.edu.jcu.cp3406.paranoidandroid", appContext.getPackageName());
     }
+    @Test
+    public void questionTest()
+    {
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        DataManager manager = new DataManager(context.getAssets());
+
+        System.out.println(manager.getCount());
+
+        assertEquals(manager.getCount(), 3);
+    }
+
+    @Test
+    public void questionLoadTest()
+    {
+        Context context = InstrumentationRegistry.getTargetContext();
+
+        DataManager manager = new DataManager(context.getAssets());
+
+        Question question = manager.getQuestion(1);
+
+        System.out.println(question.question);
+
+
+        assertNotNull(question.correctAnswer);
+        assertNotNull(question.question);
+        assertNotNull(question.answers);
+        assertNotNull(question.content);
+    }
+
+
 }

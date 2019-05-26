@@ -30,8 +30,10 @@
             android:parentActivityName=".MenuActivity" />
         <activity
             android:name=".GameActivity"
-            android:label="Game" />
-        <activity android:name=".AuthenticateActivity"></activity>
+            android:label="Game"
+            android:parentActivityName=".MenuActivity"/>
+        <activity android:name=".AuthenticateActivity"
+            android:parentActivityName=".MenuActivity"/>
     </application>
 
 </manifest>

@@ -1,0 +1,6 @@
+{
+  "question": "What logic gate has the following truth table",
+  "answers":["and", "or", "not"],
+  "correct_answer":"or",
+  "question_id":"1"
+}

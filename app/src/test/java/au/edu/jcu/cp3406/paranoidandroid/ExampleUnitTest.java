@@ -2,6 +2,7 @@ package au.edu.jcu.cp3406.paranoidandroid;
 
 import org.junit.Test;
 
+import au.edu.jcu.cp3406.paranoidandroid.game.DataManager;
 import au.edu.jcu.cp3406.paranoidandroid.score.Score;
 
 import static org.junit.Assert.*;
@@ -32,4 +33,5 @@ public class ExampleUnitTest
             System.out.println(String.format("Name %s Score %d", score.name, score.score));
         }
     }
+
 }

@@ -1,0 +1,6 @@
+{
+  "question": "What is the output 'sum' when A = 1 and B = 1",
+  "answers":["1", "0"],
+  "correct_answer":"0",
+  "question_id":"3"
+}
