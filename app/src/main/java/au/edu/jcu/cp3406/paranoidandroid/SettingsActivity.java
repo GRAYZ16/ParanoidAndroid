@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity
 {
@@ -20,6 +21,13 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        if(settings.getString("theme", "Light").equals("Dark"))
+        {
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
@@ -38,15 +46,13 @@ public class SettingsActivity extends AppCompatActivity
             }
         }));
 
-        settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
-
-        String theme = settings.getString("theme", "light");
+        String theme = settings.getString("theme", "Light");
         boolean difficulty = settings.getBoolean("difficulty", false);
         boolean sound = settings.getBoolean("sound", true);
 
 
         assert theme != null;
-        if(theme.equals("light"))
+        if(theme.equals("Light"))
         {
             spTheme.setSelection(0);
         }
@@ -78,11 +84,15 @@ public class SettingsActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        backPressed();
+        super.onBackPressed();
+    }
+
+    public void backPressed()
+    {
         settings.edit().putBoolean("sound", btnSound.getText().equals(getString(R.string.btnSettingSoundOn))).apply();
         settings.edit().putBoolean("difficulty", spDifficulty.getSelectedItem().toString().equals("On")).apply();
         settings.edit().putString("theme", spTheme.getSelectedItem().toString()).apply();
-
-        super.onBackPressed();
     }
 
     @Override
@@ -91,8 +101,9 @@ public class SettingsActivity extends AppCompatActivity
         switch (item.getItemId())
         {
             case android.R.id.home:
-                onBackPressed();
-                return true;
+                backPressed();
+                Toast.makeText(this, "Settings Saved", Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item);
 
             default:
                 return super.onOptionsItemSelected(item);

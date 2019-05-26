@@ -1,16 +1,24 @@
 package au.edu.jcu.cp3406.paranoidandroid;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import au.edu.jcu.cp3406.paranoidandroid.game.Game;
 import au.edu.jcu.cp3406.paranoidandroid.game.Question;
 import au.edu.jcu.cp3406.paranoidandroid.game.state.State;
 import au.edu.jcu.cp3406.paranoidandroid.game.state.StateListener;
+import au.edu.jcu.cp3406.paranoidandroid.score.Score;
+import au.edu.jcu.cp3406.paranoidandroid.score.ScoreManager;
 
 public class GameActivity extends AppCompatActivity implements StateListener
 {
@@ -27,6 +35,13 @@ public class GameActivity extends AppCompatActivity implements StateListener
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        if(settings.getString("theme", "Light").equals("Dark"))
+        {
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
@@ -35,6 +50,7 @@ public class GameActivity extends AppCompatActivity implements StateListener
         gameFragment = (GameFragment) fragmentManager.findFragmentById(R.id.gameFragment);
 
         shakeListener = new ShakeListener(this);
+
 
         onUpdate(State.NEW_GAME);
     }
@@ -70,8 +86,62 @@ public class GameActivity extends AppCompatActivity implements StateListener
 
             case END_GAME:
                 Toast.makeText(this, "Game Ended", Toast.LENGTH_LONG).show();
+
+                SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                String name = preferences.getString("name", "Unknown");
+
+                if(name.equals("Unknown"))
+                {
+                    promptName();
+                }
+                else
+                {
+                    setScore(name);
+                    finish();
+                }
+
                 break;
         }
+    }
+
+    private void setScore(String name)
+    {
+        ScoreManager manager = new ScoreManager(this);
+
+        Score score = new Score();
+        score.name = name;
+        score.score = questionFragment.getScore();
+        manager.addScore(score);
+    }
+
+    private void promptName()
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(GameActivity.this);
+        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(GameActivity.this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText editText = promptView.findViewById(R.id.edittext);
+
+
+        alertDialogBuilder.setCancelable(false)
+                .setPositiveButton("OK", (dialog, id) -> {
+                    SharedPreferences preferences = getSharedPreferences("Settings", Context.MODE_PRIVATE);
+                    preferences.edit().putString("name", editText.getText().toString()).apply();
+                    setScore(editText.getText().toString());
+                    finish();
+                })
+                .setNegativeButton("Cancel",
+                        (dialog, id) ->
+                        {
+                            dialog.cancel();
+                            finish();
+                        });
+
+
+
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
     private void setQuestion(Question question)
@@ -104,6 +174,7 @@ public class GameActivity extends AppCompatActivity implements StateListener
         backPressedTime = System.currentTimeMillis();
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -111,7 +182,7 @@ public class GameActivity extends AppCompatActivity implements StateListener
         {
             case android.R.id.home:
                 onBackPressed();
-                return true;
+                return super.onOptionsItemSelected(item);
 
             default:
                 return super.onOptionsItemSelected(item);

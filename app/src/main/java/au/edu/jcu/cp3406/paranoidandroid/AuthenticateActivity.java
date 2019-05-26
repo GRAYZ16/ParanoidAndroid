@@ -1,5 +1,8 @@
 package au.edu.jcu.cp3406.paranoidandroid;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +10,7 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import au.edu.jcu.cp3406.paranoidandroid.score.ScoreManager;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
@@ -21,8 +25,17 @@ public class AuthenticateActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        SharedPreferences settings = getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+
+        if(settings.getString("theme", "Light").equals("Dark"))
+        {
+            setTheme(R.style.AppTheme_Dark);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authenticate);
+
 
         webView = findViewById(R.id.webView);
 
@@ -41,6 +54,7 @@ public class AuthenticateActivity extends AppCompatActivity
                         Log.i("AuthenticateActivity", "Authenticated");
                         updateTwitterConfiguration();
                         webView.loadData("done", "text/html", null);
+                        finish();
                     }
                 }
             }
@@ -76,6 +90,11 @@ public class AuthenticateActivity extends AppCompatActivity
                 try {
                     AccessToken accessToken = twitter.getOAuthAccessToken(oauthVerifier);
                     twitter.setOAuthAccessToken(accessToken);
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+                    sharedPreferences.edit().putString("twitter-token", accessToken.getToken()).apply();
+                    sharedPreferences.edit().putString("twitter-secret", accessToken.getTokenSecret()).apply();
+
                 } catch (final Exception e) {
                     Log.e("Authenticate", e.toString());
                 }

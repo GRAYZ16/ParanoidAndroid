@@ -13,6 +13,10 @@
     <string name="btnSettingSoundOn">Mute Sound Effects</string>
     <string name="btnSettingSoundOff">Turn on Sound Effects</string>
     <string name="question">Question Text</string>
+    <string name="btnTweet">Tweet Highest Score</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_text_here">Enter text here..</string>
+    <string name="enter_tweet_message">Enter tweet message</string>
 
     <string-array name="theme">
         <item>Light</item>

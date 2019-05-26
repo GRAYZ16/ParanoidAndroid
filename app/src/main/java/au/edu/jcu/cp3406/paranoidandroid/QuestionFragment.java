@@ -2,6 +2,7 @@ package au.edu.jcu.cp3406.paranoidandroid;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ public class QuestionFragment extends Fragment
     private String correctAnswer;
     private int score;
 
+    private boolean isHardMode;
+
 
     public QuestionFragment()
     {
@@ -52,7 +55,10 @@ public class QuestionFragment extends Fragment
         soundManager = new SoundManager(context.getAssets(), SOUND_PATH);
         adapter = new ArrayAdapter<>(context, R.layout.support_simple_spinner_dropdown_item);
 
-        soundOn = context.getSharedPreferences("settings", Context.MODE_PRIVATE).getBoolean("sound", true);
+        SharedPreferences settings = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+
+        soundOn = settings.getBoolean("sound", true);
+        isHardMode = settings.getBoolean("difficulty", false);
     }
 
     @Override
@@ -83,7 +89,14 @@ public class QuestionFragment extends Fragment
             }
             else
             {
-                listener.onUpdate(State.CONTINUE_GAME);
+                if(isHardMode)
+                {
+                    listener.onUpdate(State.END_GAME);
+                }
+                else
+                {
+                    listener.onUpdate(State.CONTINUE_GAME);
+                }
 
                 if(soundOn) soundManager.play(Sound.WRONG);
             }

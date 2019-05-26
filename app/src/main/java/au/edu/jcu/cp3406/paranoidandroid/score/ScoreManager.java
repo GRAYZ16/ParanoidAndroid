@@ -1,5 +1,6 @@
 package au.edu.jcu.cp3406.paranoidandroid.score;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -58,4 +59,17 @@ public class ScoreManager
         }
         return null;
     }
+
+    public void addScore(Score score)
+    {
+        SQLiteDatabase db = scoreDatabaseHelper.getWritableDatabase();
+
+        ContentValues scoreValues = new ContentValues();
+        scoreValues.put("NAME", score.name);
+        scoreValues.put("SCORE", score.score);
+        db.insert(ScoreDatabaseHelper.SCORE_TABLE, null, scoreValues);
+    }
+
 }
+
+

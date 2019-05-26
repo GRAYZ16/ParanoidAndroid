@@ -30,7 +30,7 @@ public class ScoreDatabaseHelper extends SQLiteOpenHelper
         updateDB(db, oldVersion, newVersion);
     }
 
-    private static void addScore(SQLiteDatabase db, String name, int score)
+    private void addScore(SQLiteDatabase db, String name, int score)
     {
         ContentValues scoreValues = new ContentValues();
         scoreValues.put("NAME", name);
